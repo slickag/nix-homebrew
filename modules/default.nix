@@ -238,6 +238,35 @@ let
     /bin/ln -shf "${brew}/Library/Homebrew" "$HOMEBREW_LIBRARY/Homebrew"
     ${setupTaps prefix.taps}
 
+    # Link brew docs
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/doc"
+    "''${CHOWN[@]}" "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/doc"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/doc"
+    /bin/ln -shf "${brew}/docs" "$HOMEBREW_PREFIX/share/doc/homebrew"
+
+    # Link brew manpages
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/man/man1"
+    "''${CHOWN[@]}" "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/man/man1"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/man/man1"
+    /bin/ln -shf "${brew}/manpages/README.md" "$HOMEBREW_PREFIX/share/man/man1/README.md"
+    /bin/ln -shf "${brew}/manpages/brew.1" "$HOMEBREW_PREFIX/share/man/man1/brew.1"
+        
+    # Link brew shell completions
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/etc/bash_completion.d"
+    "''${CHOWN[@]}" "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/etc/bash_completion.d"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/etc/bash_completion.d"
+    /bin/ln -shf "${brew}/completions/bash/brew" "$HOMEBREW_PREFIX/etc/bash_completion.d/brew"
+        
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d"
+    "''${CHOWN[@]}" "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d"
+    /bin/ln -shf "${brew}/completions/fish/brew.fish" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d/brew.fish"
+        
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/zsh/site-functions"
+    "''${CHOWN[@]}" "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/zsh/site-functions"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/zsh/site-functions"
+    /bin/ln -shf "${brew}/completions/zsh/_brew" "$HOMEBREW_PREFIX/share/zsh/site-functions/_brew"
+
     # Make a fake $HOMEBREW_REPOSITORY
     rm -rf "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix"
     "''${MKDIR[@]}" "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix/.git"
