@@ -246,7 +246,7 @@ let
 
     # Link brew manpages
     "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/man/man1"
-    "''${CHOWN[@]}" "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/man/man1"
+    "''${CHOWN[@]}" "-R" "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/man"
     "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/man/man1"
     /bin/ln -shf "${brew}/manpages/README.md" "$HOMEBREW_PREFIX/share/man/man1/README.md"
     /bin/ln -shf "${brew}/manpages/brew.1" "$HOMEBREW_PREFIX/share/man/man1/brew.1"
