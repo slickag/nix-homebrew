@@ -65,7 +65,7 @@ jobs:
       - name: Create Pull Request
         id: cpr
         if: steps.check.outputs.updated == 'true'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "brew-src: ${{ steps.check.outputs.current_commit }} -> ${{ steps.check.outputs.latest_commit }}"
