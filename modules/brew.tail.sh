@@ -15,6 +15,10 @@ BIN_BREW_EXPORTED_VARS=(
   HOMEBREW_USER_CONFIG_HOME
   HOMEBREW_ORIGINAL_BREW_FILE
 )
+BIN_BREW_EXPORTED_VARS_REGEX="^($(
+  IFS='|'
+  echo "${BIN_BREW_EXPORTED_VARS[*]}"
+))(=|$)"
 
 # Load Homebrew's variable configuration files from disk.
 export_homebrew_env_file() {
@@ -22,18 +26,14 @@ export_homebrew_env_file() {
 
   env_file="${1}"
   [[ -r "${env_file}" ]] || return 0
+
   while read -r line
   do
     # only load variables defined in env_config.rb
     [[ "${line}" =~ ^(HOMEBREW_|SUDO_ASKPASS=|(all|no|ftp|https?)_proxy=) ]] || continue
 
     # forbid overriding variables that are set in this file
-    local invalid_variable
-    for VAR in "${BIN_BREW_EXPORTED_VARS[@]}"
-    do
-      [[ "${line}" = "${VAR}"* ]] && invalid_variable="${VAR}"
-    done
-    [[ -n "${invalid_variable:-}" ]] && continue
+    [[ "${line}" =~ ${BIN_BREW_EXPORTED_VARS_REGEX} ]] && continue
 
     export "${line?}"
   done <"${env_file}"
