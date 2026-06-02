@@ -332,6 +332,13 @@ let
     # Disable self-update behavior
     substituteInPlace "$out/Library/Homebrew/cmd/update.sh" \
       --replace-fail 'for DIR in "''${HOMEBREW_REPOSITORY}"' "for DIR in "
+    
+    substituteInPlace "$out/Library/Homebrew/utils/path.rb" \
+      --replace-fail 'trusted_package_root("#{HOMEBREW_LIBRARY}/Taps/")' '"#{HOMEBREW_LIBRARY}/Taps/"'
+    substituteInPlace "$out/Library/Homebrew/utils/path.rb" \
+      --replace-fail 'trusted_package_root(HOMEBREW_CELLAR)' '"#{HOMEBREW_CELLAR}/"'
+    substituteInPlace "$out/Library/Homebrew/utils/path.rb" \
+      --replace-fail 'trusted_package_root(Cask::Caskroom.path)' '"#{Cask::Caskroom.path}/"'
 
     # Disable vendored Ruby
     #
