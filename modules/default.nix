@@ -332,7 +332,10 @@ let
     # Disable self-update behavior
     substituteInPlace "$out/Library/Homebrew/cmd/update.sh" \
       --replace-fail 'for DIR in "''${HOMEBREW_REPOSITORY}"' "for DIR in "
-    
+
+    substituteInPlace "$out/Library/Homebrew/cmd/which-formula.sh" \
+      --replace-fail "ensure_executables_file" "# ensure_executables_file"
+
     substituteInPlace "$out/Library/Homebrew/utils/path.rb" \
       --replace-fail 'trusted_package_root("#{HOMEBREW_LIBRARY}/Taps/")' '"#{HOMEBREW_LIBRARY}/Taps/"'
 
