@@ -297,7 +297,12 @@ let
         error "$tty_underline${namespaceDir}$tty_reset is in the way and needs to be moved out for $tty_underline${path}$tty_reset"
         exit 1
       fi
-      if is_occupied "${tapDir}"; then
+      if [[ -L "${tapDir}" ]]; then
+        rm "${tapDir}"
+      elif [[ -d "${tapDir}" ]]; then
+        :
+        # directory
+      elif is_occupied "${tapDir}"; then
         error "An existing $tty_underline${tapDir}$tty_reset is in the way"
         exit 1
       fi
@@ -333,9 +338,6 @@ let
     substituteInPlace "$out/Library/Homebrew/cmd/update.sh" \
       --replace-fail 'for DIR in "''${HOMEBREW_REPOSITORY}"' "for DIR in "
 
-    substituteInPlace "$out/Library/Homebrew/cmd/which-formula.sh" \
-      --replace-fail "ensure_executables_file" "# ensure_executables_file"
-
     substituteInPlace "$out/Library/Homebrew/utils/path.rb" \
       --replace-fail 'trusted_package_root("#{HOMEBREW_LIBRARY}/Taps/")' '"#{HOMEBREW_LIBRARY}/Taps/"'
 
@@ -352,6 +354,9 @@ let
       echo -e "setup-ruby-path() { export HOMEBREW_RUBY_PATH=\"${ruby}/bin/ruby\"; }" >>"$ruby_sh"
       echo -e "$:.unshift \"${ruby.gems.fiddle}/${ruby.gemPath}/gems/fiddle-${ruby.gems.fiddle.version}/lib\"" >>"$bundler_setup_rb"
     fi
+  '' + lib.optionalString (!cfg.mutableTaps) ''
+    substituteInPlace "$out/Library/Homebrew/cmd/which-formula.sh" \
+      --replace-fail "ensure_executables_file" "# ensure_executables_file"
   '' + lib.optionalString (brew ? version) ''
     # Embed version number instead of checking with git
     brew_sh="$out/Library/Homebrew/brew.sh"
