@@ -314,7 +314,9 @@ let
 
     # Fully declarative taps
     else let
-      env = pkgs.runCommandLocal "taps-env" {} (lib.concatMapStrings (path: let
+      env = pkgs.runCommandLocal "taps-env" { } (''
+        mkdir -p "$out"
+      '' + lib.concatMapStrings (path: let
         namespace = builtins.head (lib.splitString "/" path);
         target = taps.${path};
       in ''
