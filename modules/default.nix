@@ -273,6 +273,7 @@ let
     "''${CHOWN[@]}" "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix"
     "''${CHMOD[@]}" 775 "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix/"{,.git}
     "''${TOUCH[@]}" "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix/.git/HEAD"
+    /bin/ln -shf "${brew}/Library" "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix"
 
     # Link generated bin/brew
     BIN_BREW="$HOMEBREW_PREFIX/bin/brew"
@@ -359,6 +360,9 @@ let
   '' + lib.optionalString (!cfg.mutableTaps) ''
     substituteInPlace "$out/Library/Homebrew/cmd/which-formula.sh" \
       --replace-fail "ensure_executables_file" "# ensure_executables_file"
+  '' + lib.optionalString (prefix.taps ? "homebrew/homebrew-core") ''
+    "''${MKDIR[@]}" "$HOMEBREW_LIBRARY/Taps/homebrew/homebrew-core/.git"
+    "''${TOUCH[@]}" "$HOMEBREW_LIBRARY/Taps/homebrew/homebrew-core/.git/HEAD"
   '' + lib.optionalString (brew ? version) ''
     # Embed version number instead of checking with git
     brew_sh="$out/Library/Homebrew/brew.sh"
