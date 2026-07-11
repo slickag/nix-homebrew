@@ -356,8 +356,17 @@ let
     substituteInPlace "$out/Library/Homebrew/cmd/update.sh" \
       --replace-fail 'for DIR in "''${HOMEBREW_REPOSITORY}"' "for DIR in "
 
+    substituteInPlace "$out/Library/Homebrew/cmd/update-report.rb" \
+      --replace-fail "          analytics_message" "          # analytics_message"
+
+    substituteInPlace "$out/Library/Homebrew/cmd/update-report.rb" \
+      --replace-fail "          donation_message" "          # donation_message"
+
     substituteInPlace "$out/Library/Homebrew/utils/path.rb" \
       --replace-fail 'trusted_package_root("#{HOMEBREW_LIBRARY}/Taps/")' '"#{HOMEBREW_LIBRARY}/Taps/"'
+
+    substituteInPlace "$out/Library/Homebrew/formula_cellar_checks.rb" \
+      --replace-fail "return if ORIGINAL_PATHS.include? prefix_bin" "return if prefix_bin.directory?"
 
     # Disable vendored Ruby
     #
