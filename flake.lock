@@ -3,11 +3,11 @@
     "brew-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784905361,
-        "narHash": "sha256-9LqeVbYtxnyTt412sq2ch+dtQSKpQO6zp/eUfeVZ630=",
+        "lastModified": 1784929485,
+        "narHash": "sha256-fmeiFeL4P3ZlyufoK3c4+aA/EJ8NiY7xKymPYYrZuGg=",
         "owner": "Homebrew",
         "repo": "brew",
-        "rev": "004a640cc7a497b48a10cac07c07d05246f91db2",
+        "rev": "15b43302df6a8b85562b0929c45498670823200a",
         "type": "github"
       },
       "original": {
