@@ -9,6 +9,7 @@ jobs:
   update-flake:
     runs-on: macos-latest
     permissions:
+      id-token: write
       contents: write
       pull-requests: write
     steps:
@@ -25,11 +26,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          CURRENT_COMMIT=$(perl -nle 'print $1 if /"rev": "([\d\D]+)",/' flake.lock)
+          CURRENT_COMMIT=$(perl -nle 'print $1 if /"rev": "([\d\D]{8})[\d\D]+",/' flake.lock)
           echo "Current commit: $CURRENT_COMMIT"
           echo "current_commit=$CURRENT_COMMIT" >> $GITHUB_OUTPUT
 
-          LATEST_COMMIT=$(gh api repos/Homebrew/brew/branches/main --jq .commit.sha)
+          LATEST_COMMIT=$(gh api repos/Homebrew/brew/branches/main --jq .commit.sha | perl -nle 'print $1 if /([\d\D]{8})[\d\D]+/')
           echo "Latest commit: $LATEST_COMMIT"
 
           if [ -z "$LATEST_COMMIT" ] || [ "$LATEST_COMMIT" = "null" ]; then
