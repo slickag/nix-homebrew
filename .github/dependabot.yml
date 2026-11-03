@@ -14,18 +14,18 @@ updates:
       include: "scope"
     allow:
       - dependency-name: "brew-src"
-    # groups:
-    #   brew-src-major:
-    #     patterns:
-    #       - "brew-src"
-    #     update-types:
-    #       - "major"
-    #   brew-src-minor-patch:
-    #     patterns:
-    #       - "brew-src"
-    #     update-types:
-    #       - "minor"
-    #       - "patch"
+    groups:
+      brew-src-major:
+        patterns:
+          - "brew-src"
+        update-types:
+          - "major"
+      brew-src-minor-patch:
+        patterns:
+          - "brew-src"
+        update-types:
+          - "minor"
+          - "patch"
 
   # CI/dev-only flake.
   - package-ecosystem: "nix"
