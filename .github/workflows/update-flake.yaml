@@ -2,8 +2,8 @@ name: Update Flake Lock
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '25 */8 * * *'
+  # schedule:
+  #   - cron: '25 */8 * * *'
 
 jobs:
   update-flake:
