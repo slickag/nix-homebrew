@@ -2,8 +2,8 @@ name: Update Flake Lock
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '25 */8 * * *'
+  schedule:
+    - cron: '25 */4 * * *'
 
 jobs:
   update-flake:
@@ -56,7 +56,7 @@ jobs:
         id: updates
         if: steps.check.outputs.updated == 'true'
         run: |
-          nix flake lock --update-input brew-src
+          nix flake update brew-src
 
           nix develop --command bash scripts/update-brew-tail.sh
 
